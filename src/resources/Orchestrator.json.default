@@ -1,0 +1,15 @@
+{
+  "HTTP_PORT" : 8002,
+  "LOGLEVEL"  : "debug",
+  "REDIS": {
+    "HOST"   : "localhost",
+    "PORT"   : 6379,
+    "EXPIRE" : 300
+  },
+  "MYSQL" : {
+    "HOST"     : "localhost",
+    "USER"     : "root",
+    "PASSWORD" : "root",
+    "DEBUG"    : false
+  }
+}

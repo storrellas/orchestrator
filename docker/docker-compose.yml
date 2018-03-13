@@ -1,0 +1,43 @@
+# to build image:
+# > docker-compose build
+
+# to run container (and keep atached to the container)
+# > docker-compose up [<service_name>]
+
+# to run container as a daemon
+# > docker-compose up -d [<service_name>]
+# to attach to daemon container
+# > docker exec -it <container_id> bash
+
+# to stop the started container
+# > docker-compose stop [<service_name>]
+
+# to stop and remove the started container
+# > docker-compose down [<service_name>]
+
+version: "3"
+services:
+  rmserver:
+    image: ${IMAGE_NAME}:${IMAGE_TAG}
+    restart: always
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    volumes:
+      - /var/log/:/tmp/var/log/
+    ports:
+      - 8000:8000
+    depends_on:
+      - redis
+    environment:
+      - VIRTUAL_HOST=${VIRTUAL_HOST}
+      - HTTPS_METHOD=noredirect
+      - LOGLEVEL=${LOGLEVEL}
+      - REDIS__HOST=redis
+      - MYSQL__HOST=${MYSQL__HOST}
+      - MYSQL__USER=${MYSQL__USER}
+      - MYSQL__PASSWORD=${MYSQL__PASSWORD}
+# See: https://docs.docker.com/compose/networking/
+  redis:
+    image: "redis:alpine"
+    restart: always

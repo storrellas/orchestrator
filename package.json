@@ -1,0 +1,40 @@
+{
+  "name": "rm-node",
+  "version": "0.9.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run prepublish; npm run build:live",
+    "build": "tsc",
+    "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/bootstrap.ts",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "mocha --opts mocha.unit.opts",
+    "test:unit:live": "mocha --opts mocha.unit.opts --watch",
+    "test:integration": "mocha --opts mocha.integration.opts",
+    "coverage": "nyc npm test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/*.spec.ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "text-summary",
+      "html"
+    ],
+    "sourceMap": true
+  }
+}

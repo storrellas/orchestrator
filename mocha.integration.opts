@@ -1,0 +1,7 @@
+--require ts-node/register
+--require source-map-support/register
+--require reflect-metadata
+--watch-extensions ts
+--timeout 15000
+--recursive
+tests/integration/**/**.spec.ts
