@@ -26,7 +26,7 @@ export class Models {
       idWZone               : {type: Sequelize.INTEGER, primaryKey:true},
       Country_A2            : {type: Sequelize.STRING(2)},
       TimeZoneCode          : {type: Sequelize.STRING(5)},
-      idWCore               : {type: Sequelize.INTEGER},
+      idWItem               : {type: Sequelize.INTEGER},
       idWRTV_Default        : {type: Sequelize.INTEGER}
     },
     {
@@ -41,7 +41,7 @@ export class Models {
       ip                    : {type: Sequelize.STRING(50)},
       WebPort               : {type: Sequelize.INTEGER},
       SecureWebPort         : {type: Sequelize.INTEGER},
-      CorePort              : {type: Sequelize.INTEGER},
+      ItemPort              : {type: Sequelize.INTEGER},
       WebControlPort        : {type: Sequelize.INTEGER},
       Type                  : {type: Sequelize.INTEGER}
     },
@@ -50,49 +50,49 @@ export class Models {
       tableName: 'WRTV'
     });
 
-    // WCoreModules
-    this.models['WCoreModulesModel'] = this.sequelize.define('WCoreModulesModel',{
-      idWCore               : {type: Sequelize.INTEGER, primaryKey:true},
-      idWCoreServerType     : {type: Sequelize.STRING(150), primaryKey:true},
+    // WItemModules
+    this.models['WItemModulesModel'] = this.sequelize.define('WItemModulesModel',{
+      idWItem               : {type: Sequelize.INTEGER, primaryKey:true},
+      idWItemServerType     : {type: Sequelize.STRING(150), primaryKey:true},
       ip                    : {type: Sequelize.STRING(50)},
       WebPort               : {type: Sequelize.INTEGER},
       SecureWebPort         : {type: Sequelize.INTEGER},
-      CorePort              : {type: Sequelize.INTEGER},
+      ItemPort              : {type: Sequelize.INTEGER},
       WebControlPort        : {type: Sequelize.INTEGER}
     },
     {
       timestamps: false,
-      tableName: 'WCoreModules'
+      tableName: 'WItemModules'
     });
 
-    // WCoreModules
-    this.models['WCoresModel'] = this.sequelize.define('WCoresModel',{
-      idWCore               : {type: Sequelize.INTEGER, primaryKey:true},
+    // WItemModules
+    this.models['WItemsModel'] = this.sequelize.define('WItemsModel',{
+      idWItem               : {type: Sequelize.INTEGER, primaryKey:true},
       Description           : {type: Sequelize.STRING(150)},
     },
     {
       timestamps: false,
-      tableName: 'WCores'
+      tableName: 'WItems'
     });
 
-    // WCoreModules
-    this.models['WCoreServerTypesModel'] = this.sequelize.define('WCoreServerTypesModel',{
-      idWCoreServerType     : {type: Sequelize.STRING(64), primaryKey:true},
+    // WItemModules
+    this.models['WItemServerTypesModel'] = this.sequelize.define('WItemServerTypesModel',{
+      idWItemServerType     : {type: Sequelize.STRING(64), primaryKey:true},
       Description           : {type: Sequelize.STRING(150)}
     },
     {
       timestamps: false,
-      tableName: 'WCoreServerTypes'
+      tableName: 'WItemServerTypes'
     });
 
     // Associations
-    this.models['WCoreModulesModel'].belongsTo(this.models['WCoresModel'], {
-      foreignKey: 'idWCore',
-      targetKey: 'idWCore'
+    this.models['WItemModulesModel'].belongsTo(this.models['WItemsModel'], {
+      foreignKey: 'idWItem',
+      targetKey: 'idWItem'
     })
-    this.models['WCoreModulesModel'].belongsTo(this.models['WCoreServerTypesModel'], {
-      foreignKey: 'idWCoreServerType',
-      targetKey: 'idWCoreServerType'
+    this.models['WItemModulesModel'].belongsTo(this.models['WItemServerTypesModel'], {
+      foreignKey: 'idWItemServerType',
+      targetKey: 'idWItemServerType'
     })
 
     // --------------------------------------------------

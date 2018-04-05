@@ -21,7 +21,7 @@ var expect = chai.expect;
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
 
-describe('get_core_by_xxx', () => {
+describe('get_item_by_xxx', () => {
   let model         : ModelsStub;
 
   before(() => {
@@ -38,7 +38,7 @@ describe('get_core_by_xxx', () => {
     return model.sync();
   })
 
-  describe('get_core_by_campaign JSON', () => {
+  describe('get_item_by_campaign JSON', () => {
 
     //
     // function to JSON
@@ -51,10 +51,10 @@ describe('get_core_by_xxx', () => {
       }
     }
 
-    it('get_core_by_campaign POST', (done) => {
+    it('get_item_by_campaign POST', (done) => {
 
       const data = {
-        event:"get_core_by_campaign",
+        event:"get_item_by_campaign",
         id: model.campaign_guid
       }
 
@@ -72,10 +72,10 @@ describe('get_core_by_xxx', () => {
     })
 
 
-    it('get_core_by_campaign GET', (done) => {
+    it('get_item_by_campaign GET', (done) => {
 
       const data = {
-        event:"get_core_by_campaign",
+        event:"get_item_by_campaign",
         id: model.campaign_guid
       }
 
@@ -91,11 +91,11 @@ describe('get_core_by_xxx', () => {
 
     })
 
-    it('get_core_by_campaign POST event api', (done) => {
+    it('get_item_by_campaign POST event api', (done) => {
 
       const data = {
         event:"api",
-        e:"get_core_by_campaign",
+        e:"get_item_by_campaign",
         id: model.campaign_guid
       }
 
@@ -115,7 +115,7 @@ describe('get_core_by_xxx', () => {
   });
 
 
-  describe('get_core_by_campaign', () => {
+  describe('get_item_by_campaign', () => {
 
     //
     // function to check XML
@@ -132,10 +132,10 @@ describe('get_core_by_xxx', () => {
     }
 
 
-    it('get_core_by_campaign GET XML', (done) => {
+    it('get_item_by_campaign GET XML', (done) => {
 
       const data = {
-        event:"get_core_by_campaign",
+        event:"get_item_by_campaign",
         id: model.campaign_guid
       }
 
@@ -152,10 +152,10 @@ describe('get_core_by_xxx', () => {
 
     })
 
-    it('get_core_by_campaign POST XML', (done) => {
+    it('get_item_by_campaign POST XML', (done) => {
 
       const data = {
-        event:"get_core_by_campaign",
+        event:"get_item_by_campaign",
         id: model.campaign_guid
       }
 

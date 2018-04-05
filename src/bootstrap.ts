@@ -12,11 +12,11 @@ import { Request, Response, Application, NextFunction } from 'express';
 import { LoggerInstance, transports, LoggerOptions, WLogger } from './utils/logger';
 import { IModels, Models } from './models/model';
 import { IDataStore, DataStore, LocalDataStore } from './service/datastore';
-import { ICoreModuleManager, CoreModuleManager } from './models/core_module_manager';
-import { ICoreService, CoreService } from './service/core_service';
+import { IItemModuleManager, ItemModuleManager } from './models/item_module_manager';
+import { IItemService, ItemService } from './service/item_service';
 
-import { RequestType } from './controller/core_controller';
-import  './controller/core_controller';
+import { RequestType } from './controller/item_controller';
+import  './controller/item_controller';
 
 // ------------------------------------
 // CONFIGURATION
@@ -130,13 +130,13 @@ else
 }
 
 
-container.bind<ICoreModuleManager>(TYPES.CoreModuleManager).toConstantValue(new CoreModuleManager(
+container.bind<IItemModuleManager>(TYPES.ItemModuleManager).toConstantValue(new ItemModuleManager(
     container.get<IModels>(TYPES.Models),
     container.get<LoggerInstance>(TYPES.Logger)
 ));
-container.bind<ICoreService>(TYPES.CoreService).toConstantValue(
-  new CoreService(
-    container.get<ICoreModuleManager>(TYPES.CoreModuleManager),
+container.bind<IItemService>(TYPES.ItemService).toConstantValue(
+  new ItemService(
+    container.get<IItemModuleManager>(TYPES.ItemModuleManager),
     container.get<IDataStore>(TYPES.DataStore),
     container.get<LoggerInstance>(TYPES.Logger)
   )
@@ -188,7 +188,7 @@ var app = express();
    // Middleware for extracting data from url / body and set into request.data
     app.use((request: Request, response: Response, next : NextFunction) => {
 
-// TODO: Check whether request is GET or POST_get_core_by
+// TODO: Check whether request is GET or POST_get_item_by
 
         // Check whether data in URL / body
         let data : string = "";

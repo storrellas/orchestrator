@@ -6,8 +6,8 @@ import * as xml2js from 'xml2js';
 
 import TYPES from '../constant/types';
 import { IModels } from '../models/model';
-import { CoreModule, RTVModule, PairCoreRTV,VACenterList } from '../models/core_module_manager';
-import { ICoreService } from '../service/core_service';
+import { ItemModule, RTVModule, PairItemRTV,VACenterList } from '../models/item_module_manager';
+import { IItemService } from '../service/item_service';
 import { LoggerInstance, transports, LoggerOptions, WLogger } from '../utils/logger';
 import { isValidGuid } from '../utils/helper';
 
@@ -16,8 +16,8 @@ export enum RequestType {
     JSON = 1,
 }
 
-export interface ICoreController {
-  get_core_by(request: Request, response: Response): void
+export interface IItemController {
+  get_item_by(request: Request, response: Response): void
 }
 
 declare global {
@@ -48,24 +48,24 @@ declare global {
 // }
 
 @controller('')
-export class CoreController {
+export class ItemController {
 
-  constructor(@inject(TYPES.CoreService) private service: ICoreService,
+  constructor(@inject(TYPES.ItemService) private service: IItemService,
               @inject(TYPES.Logger) private logger: LoggerInstance){
   }
 
   /**
     * Creates JSON response
     */
-  private create_ok_response( pair_core_rtv : PairCoreRTV, core_module_list : CoreModule[], rtv : RTVModule) : { [id: string]: any; } {
+  private create_ok_response( pair_item_rtv : PairItemRTV, item_module_list : ItemModule[], rtv : RTVModule) : { [id: string]: any; } {
     let response_json : { [id: string]: any; } = { "result" : "ok"}
 
     // Create CORE
-    const core_json : { [id: string]: any; } = {
-      id           : core_module_list[0].id,
-      desc         : core_module_list[0].description
+    const item_json : { [id: string]: any; } = {
+      id           : item_module_list[0].id,
+      desc         : item_module_list[0].description
     }
-    response_json["core"] = core_json
+    response_json["item"] = item_json
     // Create RTV
     const rtv_json : { [id: string]: any; } = {
       id           : rtv.id,
@@ -74,26 +74,26 @@ export class CoreController {
     response_json["rtv"] = rtv_json
 
     let elements_array_json = [];
-    for (let core_module of core_module_list) {
+    for (let item_module of item_module_list) {
       const type_json : { [id: string]: any; } ={
-        id         : core_module.module_type_id,
-        desc       : core_module.module_type_desc
+        id         : item_module.module_type_id,
+        desc       : item_module.module_type_desc
       }
       const port_json : { [id: string]: any; } ={
-        http       : core_module.port_http,
-        https      : core_module.port_https
+        http       : item_module.port_http,
+        https      : item_module.port_https
       }
 
-      const core_module_json : { [id: string]: any; } ={
-        core_id    : core_module.id,
-        core       : core_module.port_core,
-        webcontrol : core_module.port_webcontrol,
-        desc       : core_module.description,
+      const item_module_json : { [id: string]: any; } ={
+        item_id    : item_module.id,
+        item       : item_module.port_item,
+        webcontrol : item_module.port_webcontrol,
+        desc       : item_module.description,
         type       : type_json,
-        ip         : core_module.ip,
+        ip         : item_module.ip,
         port       : port_json
       }
-      elements_array_json.push(core_module_json)
+      elements_array_json.push(item_module_json)
     }
     response_json["elements"] = elements_array_json
     return response_json;
@@ -111,28 +111,28 @@ export class CoreController {
   }
 
   /**
-    * Get Core by Item
+    * Get Item by Item
     */
-  private get_core_by_item(guid: string, promise : Promise<{ [id: string]: any; }>) : Promise<{ [id: string]: any; }> {
+  private get_item_by_item(guid: string, promise : Promise<{ [id: string]: any; }>) : Promise<{ [id: string]: any; }> {
 
     return new Promise<{ [id: string]: any; }>( (resolve, reject) => {
 
-      // Get PairCoreRTV
+      // Get PairItemRTV
       promise
-      .then( (pair_core_rtv  : PairCoreRTV) => {
+      .then( (pair_item_rtv  : PairItemRTV) => {
 
         let rtv_local : RTVModule;
-        let core_module_list_local : CoreModule[];
-        // Get Core
-        this.service.get_core_by_id( pair_core_rtv.core_id )
-        .then( (core_module_list : CoreModule[]) => {
-          core_module_list_local = core_module_list
+        let item_module_list_local : ItemModule[];
+        // Get Item
+        this.service.get_item_by_id( pair_item_rtv.item_id )
+        .then( (item_module_list : ItemModule[]) => {
+          item_module_list_local = item_module_list
           // Get RTV
-          return this.service.get_rtv_by_id(  pair_core_rtv.rtv_id );
+          return this.service.get_rtv_by_id(  pair_item_rtv.rtv_id );
         })
         .then((rtv : RTVModule[]) => {
           rtv_local = rtv[0];
-          return resolve( this.create_ok_response(pair_core_rtv, core_module_list_local, rtv_local) )
+          return resolve( this.create_ok_response(pair_item_rtv, item_module_list_local, rtv_local) )
         })
 
       })
@@ -147,24 +147,24 @@ export class CoreController {
   }
 
   /**
-    * Get Core by Campaign
+    * Get Item by Campaign
     */
-  private get_core_by_campaign(guid : string) : Promise<{ [id: string]: any; }> {
-    return this.get_core_by_item ( guid, this.service.get_core_by_campaign(guid) );
+  private get_item_by_campaign(guid : string) : Promise<{ [id: string]: any; }> {
+    return this.get_item_by_item ( guid, this.service.get_item_by_campaign(guid) );
   }
 
   /**
-    * Get Core by Branch
+    * Get Item by Branch
     */
-  private get_core_by_branch(guid : string) : Promise<{ [id: string]: any; }> {
-    return this.get_core_by_item ( guid, this.service.get_core_by_branch(guid) );
+  private get_item_by_branch(guid : string) : Promise<{ [id: string]: any; }> {
+    return this.get_item_by_item ( guid, this.service.get_item_by_branch(guid) );
   }
 
   /**
-    * Get Core by Branch
+    * Get Item by Branch
     */
-  private get_core_by_vacenter(guid : string) : Promise<{ [id: string]: any; }> {
-    return this.get_core_by_item ( guid, this.service.get_core_by_vacenter(guid) );
+  private get_item_by_vacenter(guid : string) : Promise<{ [id: string]: any; }> {
+    return this.get_item_by_item ( guid, this.service.get_item_by_vacenter(guid) );
   }
 
   /**
@@ -246,14 +246,14 @@ export class CoreController {
     // Handle event according to event received
     let event_promise : Promise<{ [id: string]: any; }>;
     switch(event){
-      case "get_core_by_campaign":
-        event_promise = this.get_core_by_campaign(guid);
+      case "get_item_by_campaign":
+        event_promise = this.get_item_by_campaign(guid);
         break;
-      case "get_core_by_branch":
-        event_promise = this.get_core_by_branch(guid);
+      case "get_item_by_branch":
+        event_promise = this.get_item_by_branch(guid);
         break;
-      case "get_core_by_vacenter":
-        event_promise = this.get_core_by_vacenter(guid);
+      case "get_item_by_vacenter":
+        event_promise = this.get_item_by_vacenter(guid);
         break;
       case "get_vacenters_by_user":
         event_promise = this.get_vacenters_by_user(guid)
@@ -278,18 +278,18 @@ export class CoreController {
   }
 
   /**
-    * POST to get core by
+    * POST to get item by
     */
   @httpPost('')
-  public POST_get_core_by(request: Request, response: Response): void {
+  public POST_get_item_by(request: Request, response: Response): void {
     this.handle_event(request, response);
   }
 
   /**
-    * GET to get core by
+    * GET to get item by
     */
   @httpGet('')
-  public GET_get_core_by(request: any, response: Response): void {
+  public GET_get_item_by(request: any, response: Response): void {
     this.handle_event(request, response);
   }
 

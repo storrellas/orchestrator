@@ -1,9 +1,9 @@
 const TYPES = {
   Logger: Symbol('WLogger'),
-  CoreService: Symbol('CoreService'),
+  ItemService: Symbol('ItemService'),
   DataStore: Symbol('DataStore'),
   Models: Symbol('Models'),
-  CoreModuleManager: Symbol('CoreModuleManager')
+  ItemModuleManager: Symbol('ItemModuleManager')
 };
 
 export default TYPES;

@@ -6,27 +6,27 @@ import * as Sequelize from 'sequelize';
 import { IDataStore } from './datastore';
 
 import TYPES from '../constant/types';
-import { PairCoreRTV,
-          CoreModule,
+import { PairItemRTV,
+          ItemModule,
           RTVModule,
           VACenter,
           VACenterList,
-          ICoreModuleManager } from '../models/core_module_manager';
+          IItemModuleManager } from '../models/item_module_manager';
 import { LoggerInstance, transports, LoggerOptions, WLogger } from '../utils/logger';
 
-export interface ICoreService {
-  get_core_by_id( id? : number )  : Promise<CoreModule[]>
+export interface IItemService {
+  get_item_by_id( id? : number )  : Promise<ItemModule[]>
   get_rtv_by_id( id? : number )  : Promise<RTVModule[]>
   get_vacenters_by_user( guid : string )  : Promise<VACenterList>
-  get_core_by_vacenter( guid : string )  : Promise<PairCoreRTV>
-  get_core_by_branch( guid : string )  : Promise<PairCoreRTV>
-  get_core_by_campaign( guid : string )  : Promise<PairCoreRTV>
+  get_item_by_vacenter( guid : string )  : Promise<PairItemRTV>
+  get_item_by_branch( guid : string )  : Promise<PairItemRTV>
+  get_item_by_campaign( guid : string )  : Promise<PairItemRTV>
 }
 
 @injectable()
-export class CoreService implements ICoreService {
+export class ItemService implements IItemService {
   constructor(
-    @inject(TYPES.CoreModuleManager) private core_module_manager: ICoreModuleManager,
+    @inject(TYPES.ItemModuleManager) private item_module_manager: IItemModuleManager,
     @inject(TYPES.DataStore) private data_store: IDataStore,
     @inject(TYPES.Logger) private logger: LoggerInstance)
   {
@@ -47,14 +47,14 @@ export class CoreService implements ICoreService {
           this.logger.debug( JSON.stringify(cache_key) + " not found in cache retrieving from DB")
           // Retrieve from DB
           db_handler(id)
-          .then( (core_module_list : any)  => {
-            this.data_store.set( JSON.stringify(cache_key), core_module_list)
-            return resolve(core_module_list)
+          .then( (item_module_list : any)  => {
+            this.data_store.set( JSON.stringify(cache_key), item_module_list)
+            return resolve(item_module_list)
           })
           .catch( (err) => {
             console.log(err);
-            let core_module : any = []
-            return reject(core_module)
+            let item_module : any = []
+            return reject(item_module)
           });
         }else{
           return resolve(value)
@@ -68,19 +68,19 @@ export class CoreService implements ICoreService {
   }
 
   /**
-    * Get core by Id
+    * Get item by Id
     */
-  public get_core_by_id( id? : number )  : Promise<CoreModule[]> {
+  public get_item_by_id( id? : number )  : Promise<ItemModule[]> {
 
     // Generate cache key
     let id_local = 0;
     if( id != undefined )
       id_local = id;
-    let cache_key = {get_core_by_id: id_local};
+    let cache_key = {get_item_by_id: id_local};
 
     return this.get_item_by_id( cache_key,
                                 id,
-                                this.core_module_manager.get_db_core_by_id.bind(this.core_module_manager) );
+                                this.item_module_manager.get_db_item_by_id.bind(this.item_module_manager) );
   }
 
 
@@ -97,7 +97,7 @@ export class CoreService implements ICoreService {
 
     return this.get_item_by_id( cache_key,
                                 id,
-                                this.core_module_manager.get_db_rtv_by_id.bind(this.core_module_manager) );
+                                this.item_module_manager.get_db_rtv_by_id.bind(this.item_module_manager) );
   }
 
 
@@ -111,48 +111,48 @@ export class CoreService implements ICoreService {
 
     return this.get_item_by_id( cache_key,
                                 guid,
-                                this.core_module_manager.get_db_vacenters_by_user.bind(this.core_module_manager) );
+                                this.item_module_manager.get_db_vacenters_by_user.bind(this.item_module_manager) );
   }
 
 
   /**
     * Get CORE by Branch
     */
-  public get_core_by_vacenter( guid : string )  : Promise<PairCoreRTV> {
+  public get_item_by_vacenter( guid : string )  : Promise<PairItemRTV> {
 
     // Generate cache key
-    let cache_key = {get_core_by_vacenter: guid};
+    let cache_key = {get_item_by_vacenter: guid};
 
     return this.get_item_by_id( cache_key,
                                 guid,
-                                this.core_module_manager.get_db_core_by_vacenter.bind(this.core_module_manager) );
+                                this.item_module_manager.get_db_item_by_vacenter.bind(this.item_module_manager) );
   }
 
 
   /**
     * Get CORE by Branch
     */
-  public get_core_by_branch( guid : string )  : Promise<PairCoreRTV> {
+  public get_item_by_branch( guid : string )  : Promise<PairItemRTV> {
 
     // Generate cache key
-    let cache_key = {get_core_by_branch: guid};
+    let cache_key = {get_item_by_branch: guid};
 
     return this.get_item_by_id( cache_key,
                                 guid,
-                                this.core_module_manager.get_db_core_by_branch.bind(this.core_module_manager) );
+                                this.item_module_manager.get_db_item_by_branch.bind(this.item_module_manager) );
   }
 
   /**
     * Get CORE by Campaign
     */
-  public get_core_by_campaign( guid : string )  : Promise<PairCoreRTV> {
+  public get_item_by_campaign( guid : string )  : Promise<PairItemRTV> {
 
     // Generate cache key
-    let cache_key = {get_core_by_campaign: guid};
+    let cache_key = {get_item_by_campaign: guid};
 
     return this.get_item_by_id( cache_key,
                                 guid,
-                                this.core_module_manager.get_db_core_by_campaign.bind(this.core_module_manager) );
+                                this.item_module_manager.get_db_item_by_campaign.bind(this.item_module_manager) );
   }
 
 }

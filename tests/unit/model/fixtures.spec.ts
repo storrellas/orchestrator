@@ -6,7 +6,7 @@ import * as Sequelize from 'sequelize';
 
 export class ModelsStub extends Models{
 
-  public core_id                : number = 1;
+  public item_id                : number = 1;
   public rtv_id                 : number = 4;
   public customer_guid          : string = uuid();
   public campaign_guid          : string = uuid();
@@ -21,7 +21,7 @@ export class ModelsStub extends Models{
   public ip                     : string = "127.0.0.1";
   public webport                : number = 80;
   public secure_webport         : number = 443;
-  public core_port              : number = 9889;
+  public item_port              : number = 9889;
   public webcontrol_port        : number = 9880;
 
   constructor(database : string, user : string, password : string, options: Sequelize.Options ) {
@@ -34,58 +34,58 @@ export class ModelsStub extends Models{
 
       this.sequelize.sync({ force: true}).then( () => {
 
-        return this.models['WCoreServerTypesModel'].bulkCreate([
-          { idWCoreServerType : 1,  Description : "PBX",  },
-          { idWCoreServerType : 2,  Description : "RTV",  },
-          { idWCoreServerType : 3,  Description : "RM",   },
-          { idWCoreServerType : 11, Description : "LM",   },
-          { idWCoreServerType : 14, Description : "GARI", },
-          { idWCoreServerType : 20, Description : "ACM",  },
-          { idWCoreServerType : 25, Description : "KPI",  },
+        return this.models['WItemServerTypesModel'].bulkCreate([
+          { idWItemServerType : 1,  Description : "PBX",  },
+          { idWItemServerType : 2,  Description : "RTV",  },
+          { idWItemServerType : 3,  Description : "RM",   },
+          { idWItemServerType : 11, Description : "LM",   },
+          { idWItemServerType : 14, Description : "GARI", },
+          { idWItemServerType : 20, Description : "ACM",  },
+          { idWItemServerType : 25, Description : "KPI",  },
         ]);
 
       })
       .then( () =>{
-        return this.models['WCoresModel'].bulkCreate([
-          { idWCore : this.core_id,    Description : "dummy cores", },
+        return this.models['WItemsModel'].bulkCreate([
+          { idWItem : this.item_id,    Description : "dummy items", },
         ]);
       })
       .then( () =>{
-        return this.models['WCoreModulesModel'].bulkCreate([
+        return this.models['WItemModulesModel'].bulkCreate([
           {
-            idWCore               : this.core_id,
-            idWCoreServerType     : 11,
+            idWItem               : this.item_id,
+            idWItemServerType     : 11,
             ip                    : this.ip,
             WebPort               : this.webport,
             SecureWebPort         : this.secure_webport,
-            CorePort              : this.core_port,
+            ItemPort              : this.item_port,
             WebControlPort        : this.webcontrol_port
           },
           {
-            idWCore               : this.core_id,
-            idWCoreServerType     : 14,
+            idWItem               : this.item_id,
+            idWItemServerType     : 14,
             ip                    : this.ip,
             WebPort               : this.webport,
             SecureWebPort         : this.secure_webport,
-            CorePort              : this.core_port,
+            ItemPort              : this.item_port,
             WebControlPort        : this.webcontrol_port
           },
           {
-            idWCore               : this.core_id,
-            idWCoreServerType     : 20,
+            idWItem               : this.item_id,
+            idWItemServerType     : 20,
             ip                    : this.ip,
             WebPort               : this.webport,
             SecureWebPort         : this.secure_webport,
-            CorePort              : this.core_port,
+            ItemPort              : this.item_port,
             WebControlPort        : this.webcontrol_port
           },
           {
-            idWCore               : this.core_id,
-            idWCoreServerType     : 25,
+            idWItem               : this.item_id,
+            idWItemServerType     : 25,
             ip                    : this.ip,
             WebPort               : this.webport,
             SecureWebPort         : this.secure_webport,
-            CorePort              : this.core_port,
+            ItemPort              : this.item_port,
             WebControlPort        : this.webcontrol_port
           }
         ]);
@@ -98,7 +98,7 @@ export class ModelsStub extends Models{
             ip                    : this.ip,
             WebPort               : this.webport,
             SecureWebPort         : this.secure_webport,
-            CorePort              : this.core_port,
+            ItemPort              : this.item_port,
             WebControlPort        : this.webcontrol_port,
             Type                  : 0
           },
@@ -108,7 +108,7 @@ export class ModelsStub extends Models{
             ip                    : this.ip,
             WebPort               : this.webport,
             SecureWebPort         : this.secure_webport,
-            CorePort              : this.core_port,
+            ItemPort              : this.item_port,
             WebControlPort        : this.webcontrol_port,
             Type                  : 0
           },
@@ -131,7 +131,7 @@ export class ModelsStub extends Models{
             idWZone               : 1,
             Country_A2            : "ES",
             TimeZoneCode          : "BST",
-            idWCore               : 1,
+            idWItem               : 1,
             idWRTV_Default        : 4
           },
         ]);
@@ -155,7 +155,7 @@ export class ModelsStub extends Models{
             PositiveMonkey        : true,
             GariEnabled           : true,
             Country               : "ES",
-            idWZone               : this.core_id,
+            idWZone               : this.item_id,
             WTimeZone             : "abc",
             Product               : "dummy product",
             IpFilter              : false,
