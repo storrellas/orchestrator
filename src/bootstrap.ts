@@ -150,7 +150,7 @@ container.bind<ICoreService>(TYPES.CoreService).toConstantValue(
 
 const http_port  = nconf.get("HTTP_PORT")
 logger.info('-------------------------------------')
-logger.info('          WHISBI RM GATEWAY         ')
+logger.info('        ORCHESTRATOR GATEWAY         ')
 logger.info('-------------------------------------')
 logger.info('Listening at ' + http_port + ' for http')
 fs.readFile(config_file, 'utf8', function (err : NodeJS.ErrnoException,data) {
